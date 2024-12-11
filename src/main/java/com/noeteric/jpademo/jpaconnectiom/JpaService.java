@@ -3,45 +3,51 @@ package com.noeteric.jpademo.jpaconnectiom;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JpaService {
 
-    public JpaService() {
-    }
+@PersistenceUnit(name = "jpademo")
+    private static EntityManagerFactory entityManagerFactory;
 
-    public static List<Employee> getEmployeesWithProjects() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpademo");
-        EntityManager em = emf.createEntityManager();
+    public Map<Integer, List<Employee>> getAllocationEmployeesJpa() {
+        entityManagerFactory = Persistence.createEntityManagerFactory("jpademo");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Map<Integer, List<Employee>> projectEmployeeMap = new HashMap<>();
 
-        em.getTransaction().begin();
-
-        List<Employee> employees = null;
         try {
+            entityManager.getTransaction().begin();
+            String sql = "SELECT p.id as projectId, e.id as employeeId, e.name as employeeName " +
+                    "FROM sys.project p CROSS JOIN sys.employee e WHERE p.id = e.pid";
 
-            Query query = em.createQuery("SELECT e FROM Employee e JOIN FETCH e.project");
-            employees = query.getResultList();
+            Query query = entityManager.createNativeQuery(sql);
 
-            for (Employee employee : employees) {
-                System.out.println("Employee: " + employee.getName());
-                if (employee.getProject() != null) {
-                    System.out.println("    Project: " + employee.getProject().getPname());
-                } else {
-                    System.out.println("    No Project Assigned");
+            List<Object[]> resultList = query.getResultList();
+
+            for (Object[] result : resultList) {
+                Integer projectId = (Integer) result[0];
+                Integer employeeId = (Integer) result[1];
+                String employeeName = (String) result[2];
+
+                if (!projectEmployeeMap.containsKey(projectId)) {
+                    projectEmployeeMap.put(projectId, new ArrayList<>());
                 }
+
+                Employee employee = new Employee();
+                employee.setId(employeeId);
+                employee.setName(employeeName);
+                projectEmployeeMap.get(projectId).add(employee);
             }
 
-            em.getTransaction().commit();
-
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
             e.printStackTrace();
-        } finally {
-            em.close();
-            emf.close();
+
         }
-        return employees;
+
+        return projectEmployeeMap;
     }
 }
+

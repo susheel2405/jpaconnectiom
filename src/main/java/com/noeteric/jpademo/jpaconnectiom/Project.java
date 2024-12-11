@@ -1,32 +1,46 @@
 package com.noeteric.jpademo.jpaconnectiom;
 
 import jakarta.persistence.*;
-import java.util.Set;
+import lombok.Data;
+
+import java.util.Date;
+import java.util.List;
+
 
 @Entity
 @Table(name = "project",schema = "sys")
+@Data
 public class Project {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;  // Project's primary key
+  @Column(name = "id")
+  private int id;
 
-  private String pname; // Project's name
+  @Column(name = "pname")
+  private String name;
 
-  // Getters and Setters
-  public Long getId() {
-    return id;
+  @OneToMany(mappedBy = "project")
+  private List<Employee> employees;
+
+  @Column(name = "startdate",nullable = false)
+  private Date startDate;
+
+  public Project() {
+
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  @Override
+  public String toString() {
+    return "Project{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", employees=" + employees +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            '}';
   }
 
-  public String getPname() {
-    return pname;
-  }
+  @Column(name = "enddate",nullable = false)
+  private Date endDate;
 
-  public void setPname(String pname) {
-    this.pname = pname;
   }
-}

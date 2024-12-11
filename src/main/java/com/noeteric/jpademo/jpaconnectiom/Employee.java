@@ -1,29 +1,70 @@
 package com.noeteric.jpademo.jpaconnectiom;
 
 import jakarta.persistence.*;
-import java.util.Set;
+import lombok.Data;
 
-@Entity()
-@Table(name = "employee",schema = "sys")
-public class Employee {
+import java.util.List;
+
+
+@Entity
+@Table(name = "employee", schema = "sys")
+@Data
+public class Employee{
 
     @Id
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    private Long id;  // Employee's primary key
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    private String name; // Employee's name
+    @Column(name = "dept", nullable = false)
+    private String dept;
 
-    @ManyToOne  // Many Employees can be assigned to one Project
-    @JoinColumn(name = "project_id")  // The foreign key column that points to Project
-    private Project project;  // Reference to the Project the employee is associated with
+    @Column(name = "salary", nullable = false)
+    private double salary;
 
-    // Getters and Setters
-    public Long getId() {
+    @ManyToOne
+    @JoinColumn(name = "pid",referencedColumnName = "id")
+    private Project project;
+
+    @ManyToOne
+    @JoinColumn(name = "mid", referencedColumnName = "id")
+    private Employee manager;
+
+    @OneToMany(mappedBy = "manager")
+    private List<Employee> employeeList;
+
+    public String getDept() {
+        return dept;
+    }
+
+    public void setDept(String dept) {
+        this.dept = dept;
+    }
+
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Employee getManager() {
+        return manager;
+    }
+
+    public void setManager(Employee manager) {
+        this.manager = manager;
     }
 
     public String getName() {
@@ -41,4 +82,26 @@ public class Employee {
     public void setProject(Project project) {
         this.project = project;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "dept='" + dept + '\'' +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", salary=" + salary +
+                ", project=" + project +
+                ", manager=" + manager +
+                ", employeeList=" + employeeList +
+                '}';
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
 }
+
