@@ -1,4 +1,4 @@
-package com.noeteric.jpademo.jpaconnectiom;
+package com.noeteric.jpademo.jpaconnectiom.jpademo;
 
 import java.util.List;
 import java.util.Map;

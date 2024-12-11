@@ -1,4 +1,4 @@
-package com.noeteric.jpademo.jpaconnectiom;
+package com.noeteric.jpademo.jpaconnectiom.jpademo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
