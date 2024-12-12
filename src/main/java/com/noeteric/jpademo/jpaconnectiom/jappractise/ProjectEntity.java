@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Entity
@@ -14,77 +15,73 @@ import java.util.List;
 public class ProjectEntity {
 
 
-    public  ProjectEntity(){
 
-    }
-    @Id
-    @Column(name = "id")
-    private  int id;
+        @Id
+        @Column(name = "id", nullable = false)
+        private int id;
 
+        @Column(name = "pname", nullable = false)
+        private String name;
 
-    @OneToMany(mappedBy = "projectEntity",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<EmployeeEntity> employeeEntityList;
+        @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        private List<EmployeeEntity> employees;
 
-    @OneToMany(mappedBy = "projectEntity",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<EmployeeEntity> employees;
+        @Column(name = "startdate", nullable = false)
+        private Date startDate;
 
-    @Column(name = "pname")
-    private  String name;
-    @Column(name = "startdate")
-    private Date startDate;
+        @Column(name = "enddate", nullable = false)
+        private Date endDate;
 
-    @Column(name = "enddate")
-    private  Date endDate;
+        public int getId() {
+            return id;
+        }
 
+        public void setId(int id) {
+            this.id = id;
+        }
 
-    public int getId() {
-        return id;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public List<EmployeeEntity> getEmployeeEntityList() {
-        return employeeEntityList;
-    }
+        public List<EmployeeEntity> getEmployees() {
+            return employees;
+        }
 
-    public void setEmployeeEntityList(List<EmployeeEntity> employeeEntityList) {
-        this.employeeEntityList = employeeEntityList;
-    }
+        public void setEmployees(List<EmployeeEntity> employees) {
+            this.employees = employees;
+        }
 
-    public String getName() {
-        return name;
-    }
+        public Date getStartDate() {
+            return startDate;
+        }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        public void setStartDate(Date startDate) {
+            this.startDate = startDate;
+        }
 
-    public Date getStartDate() {
-        return startDate;
-    }
+        public Date getEndDate() {
+            return endDate;
+        }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
+        public void setEndDate(Date endDate) {
+            this.endDate = endDate;
+        }
 
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
 
     @Override
     public String toString() {
         return "ProjectEntity{" +
-                "id=" + id +
+                "employees=" + employees +
+                ", id=" + id +
                 ", name='" + name + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 '}';
     }
-
 }
+

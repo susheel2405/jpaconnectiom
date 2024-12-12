@@ -4,30 +4,30 @@ package com.noeteric.jpademo.jpaconnectiom.jappractise;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "employee",schema = "sys")
+@Table(name = "Employee",schema = "sys")
 public class EmployeeEntity {
 
 
-    public  EmployeeEntity(){
 
-    }
     @Id
     @Column(name = "id")
-    private  int id;
+    private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "dept")
-    private  String dept;
+    private String department;
 
     @Column(name = "salary")
-    private  double salary;
+    private double salary;
+
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "pid",referencedColumnName = "id")
-    private ProjectEntity projectEntity;
+    @JoinColumn(name = "pid",referencedColumnName = "id", nullable = false)
+    private ProjectEntity project;
 
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -44,12 +44,12 @@ public class EmployeeEntity {
         this.name = name;
     }
 
-    public String getDept() {
-        return dept;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setDept(String dept) {
-        this.dept = dept;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public double getSalary() {
@@ -60,36 +60,24 @@ public class EmployeeEntity {
         this.salary = salary;
     }
 
-    public ProjectEntity getProjectEntity() {
-        return projectEntity;
+    public ProjectEntity getProject() {
+        return project;
     }
 
-    public void setProjectEntity(ProjectEntity projectEntity) {
-        this.projectEntity = projectEntity;
+    public void setProject(ProjectEntity project) {
+        this.project = project;
     }
 
-    public int getMid() {
-        return mid;
-    }
+    // toString method for debugging
 
-    public void setMid(int mid) {
-        this.mid = mid;
-    }
 
     @Override
     public String toString() {
         return "EmployeeEntity{" +
-                "id=" + id +
+                "salary=" + salary +
                 ", name='" + name + '\'' +
-                ", dept='" + dept + '\'' +
-                ", salary=" + salary +
-                ", mid=" + mid +
+                ", id=" + id +
+                ", department='" + department + '\'' +
                 '}';
     }
-
-    @Column(name = "mid")
-    private  int mid;
-
-
-
 }
